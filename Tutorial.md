@@ -449,3 +449,5 @@ public class PersonCommandTree {
 	}
 }
 ```
+
+Warning : It is VERY important to note that there is an internal cast of ICommandNode in the class <code>CommandNode</code> in order to be sure that only CommandNode are added to another one. Also, only a command node can be set as the parent of another command node.
