@@ -1,4 +1,4 @@
-package fr.pederobien.commandtree.impl;
+package fr.pederobien.commandtree.exceptions;
 
 import java.util.StringJoiner;
 

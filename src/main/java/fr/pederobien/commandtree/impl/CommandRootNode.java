@@ -6,6 +6,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import fr.pederobien.commandtree.exceptions.NodeNotFoundException;
+import fr.pederobien.commandtree.exceptions.NotAvailableArgumentException;
+import fr.pederobien.commandtree.exceptions.NotAvailableCommandException;
 import fr.pederobien.commandtree.interfaces.ICommandHelperNode;
 import fr.pederobien.commandtree.interfaces.ICommandNode;
 import fr.pederobien.commandtree.interfaces.IHelperNode;

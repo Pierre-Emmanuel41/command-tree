@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import fr.pederobien.commandtree.exceptions.NodeNotFoundException;
+import fr.pederobien.commandtree.exceptions.NotAvailableArgumentException;
 import fr.pederobien.commandtree.interfaces.ICommandNode;
 import fr.pederobien.commandtree.interfaces.INode;
 

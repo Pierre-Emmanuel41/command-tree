@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import fr.pederobien.commandtree.events.NodeAddPostEvent;
 import fr.pederobien.commandtree.events.NodeRemovePostEvent;
+import fr.pederobien.commandtree.exceptions.BooleanParseException;
 import fr.pederobien.commandtree.exceptions.NodeRegisterException;
 import fr.pederobien.commandtree.interfaces.INode;
 import fr.pederobien.utils.event.EventManager;

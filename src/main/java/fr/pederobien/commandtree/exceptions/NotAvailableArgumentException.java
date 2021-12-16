@@ -1,4 +1,4 @@
-package fr.pederobien.commandtree.impl;
+package fr.pederobien.commandtree.exceptions;
 
 public class NotAvailableArgumentException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
