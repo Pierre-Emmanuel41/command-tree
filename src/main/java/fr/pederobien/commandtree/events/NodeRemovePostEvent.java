@@ -1,5 +1,7 @@
 package fr.pederobien.commandtree.events;
 
+import java.util.StringJoiner;
+
 import fr.pederobien.commandtree.interfaces.INode;
 
 public class NodeRemovePostEvent extends NodeEvent {
@@ -21,5 +23,13 @@ public class NodeRemovePostEvent extends NodeEvent {
 	 */
 	public INode<?> getSource() {
 		return source;
+	}
+
+	@Override
+	public String toString() {
+		StringJoiner joiner = new StringJoiner(", ", "{", "}");
+		joiner.add("source=" + source.getLabel());
+		joiner.add("remove=" + getNode().getLabel());
+		return String.format("%s_%s", getName(), joiner);
 	}
 }

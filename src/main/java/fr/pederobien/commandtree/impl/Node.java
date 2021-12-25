@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import fr.pederobien.commandtree.events.NodeAddPostEvent;
+import fr.pederobien.commandtree.events.NodeAvailableChangePostEvent;
 import fr.pederobien.commandtree.events.NodeRemovePostEvent;
 import fr.pederobien.commandtree.exceptions.BooleanParseException;
 import fr.pederobien.commandtree.exceptions.NodeRegisterException;
@@ -34,6 +35,7 @@ public class Node<T> implements INode<T> {
 	private INode<T> parent;
 	private Supplier<Boolean> isAvailable;
 	private Map<String, INode<T>> nodes;
+	private boolean availableValue;
 
 	/**
 	 * Creates a node specified by the given parameters.
@@ -47,6 +49,7 @@ public class Node<T> implements INode<T> {
 		this.explanation = explanation;
 		this.nodes = new LinkedHashMap<String, INode<T>>();
 		this.isAvailable = isAvailable;
+		availableValue = isAvailable.get();
 	}
 
 	/**
@@ -121,7 +124,10 @@ public class Node<T> implements INode<T> {
 
 	@Override
 	public boolean isAvailable() {
-		return isAvailable.get();
+		boolean available = isAvailable.get();
+		if (availableValue != available)
+			EventManager.callEvent(new NodeAvailableChangePostEvent(this));
+		return availableValue = isAvailable.get();
 	}
 
 	@Override
