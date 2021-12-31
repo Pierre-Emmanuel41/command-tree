@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.RandomAccess;
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class Node<T> implements INode<T> {
 	private INode<T> parent;
 	private Supplier<Boolean> isAvailable;
 	private Map<String, INode<T>> nodes;
-	private boolean availableValue;
+	private AtomicBoolean availableValue;
 
 	/**
 	 * Creates a node specified by the given parameters.
@@ -49,7 +50,8 @@ public class Node<T> implements INode<T> {
 		this.explanation = explanation;
 		this.nodes = new LinkedHashMap<String, INode<T>>();
 		this.isAvailable = isAvailable;
-		availableValue = isAvailable.get();
+
+		availableValue = new AtomicBoolean(isAvailable.get());
 	}
 
 	/**
@@ -125,14 +127,16 @@ public class Node<T> implements INode<T> {
 	@Override
 	public boolean isAvailable() {
 		boolean available = isAvailable.get();
-		if (availableValue != available)
+		if (availableValue.compareAndSet(!available, available))
 			EventManager.callEvent(new NodeAvailableChangePostEvent(this));
-		return availableValue = isAvailable.get();
+		return availableValue.get();
 	}
 
 	@Override
 	public void setAvailable(Supplier<Boolean> isAvailable) {
 		this.isAvailable = isAvailable;
+		// In order to throw a availability change event.
+		isAvailable();
 	}
 
 	/**

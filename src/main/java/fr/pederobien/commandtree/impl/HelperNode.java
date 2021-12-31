@@ -46,10 +46,11 @@ public class HelperNode<T> implements IHelperNode<T> {
 	 * Filter the element of the given stream in order to return only available element without the element with label "help".
 	 * 
 	 * @param stream The stream to filter.
+	 * @param args   The array whose the last element is used as filter.
 	 * 
 	 * @return A filtered stream.
 	 */
-	protected Stream<String> filter(Stream<? extends INode<T>> stream) {
-		return stream.filter(e -> e.isAvailable() && !e.getLabel().equals("help")).map(e -> e.getLabel());
+	protected Stream<String> filter(Stream<? extends INode<T>> stream, String... args) {
+		return stream.filter(e -> e.isAvailable()).map(e -> e.getLabel()).filter(str -> str.contains(args[args.length - 1]));
 	}
 }

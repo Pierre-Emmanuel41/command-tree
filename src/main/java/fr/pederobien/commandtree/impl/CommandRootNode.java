@@ -69,23 +69,27 @@ public class CommandRootNode<T> extends RootNode<T> implements ICommandNode<T> {
 		if (!isAvailable())
 			return emptyList();
 
+		String label;
 		try {
-			String argument = args[0];
-			ICommandNode<T> node = getChildren().get(argument);
-
-			// Node not recognized, display all available children nodes.
-			if (node == null)
-				return filter(concat(getAvailableChildren().map(e -> e.getLabel()), Stream.of(getHelper().getLabel())), argument);
-
-			// Node not available, display nothing.
-			if (!node.isAvailable())
-				return emptyList();
-
-			return node.onTabComplete(extract(args, 1));
+			label = args[0];
 		} catch (IndexOutOfBoundsException e) {
-			// When args is empty -> args[0] throw an IndexOutOfBoundsException
 			return emptyList();
 		}
+
+		if (label.equals(getHelper().getLabel()))
+			return getHelper().onTabComplete(args);
+
+		ICommandNode<T> node = getChildren().get(label);
+
+		// Node not recognized, display all available children nodes.
+		if (node == null)
+			return filter(concat(getAvailableChildren().map(e -> e.getLabel()), Stream.of(getHelper().getLabel())), label);
+
+		// Node not available, display nothing.
+		if (!node.isAvailable())
+			return emptyList();
+
+		return node.onTabComplete(extract(args, 1));
 	}
 
 	@Override
@@ -93,24 +97,25 @@ public class CommandRootNode<T> extends RootNode<T> implements ICommandNode<T> {
 		if (!isAvailable())
 			throw new NotAvailableCommandException(getLabel());
 
+		String label;
 		try {
-			String argument = args[0];
-			ICommandNode<T> node = getChildren().get(argument);
-
-			if (argument.equals(getHelper().getLabel()))
-				return getHelper().onCommand(extract(args, 1));
-
-			if (node == null)
-				throw new NodeNotFoundException(getLabel(), argument, args);
-
-			if (!node.isAvailable())
-				throw new NotAvailableArgumentException(node.getLabel(), argument);
-
-			return node.onCommand(extract(args, 1));
+			label = args[0];
 		} catch (IndexOutOfBoundsException e) {
-			// Do nothing
+			return false;
 		}
-		return true;
+
+		if (label.equals(getHelper().getLabel()))
+			return getHelper().onCommand(args);
+
+		ICommandNode<T> node = getChildren().get(label);
+
+		if (node == null)
+			throw new NodeNotFoundException(getLabel(), label, args);
+
+		if (!node.isAvailable())
+			throw new NotAvailableArgumentException(node.getLabel(), label);
+
+		return node.onCommand(extract(args, 1));
 	}
 
 	@Override
