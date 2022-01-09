@@ -11,10 +11,11 @@ import fr.pederobien.commandtree.exceptions.NotAvailableArgumentException;
 import fr.pederobien.commandtree.exceptions.NotAvailableCommandException;
 import fr.pederobien.commandtree.interfaces.ICommandHelperNode;
 import fr.pederobien.commandtree.interfaces.ICommandNode;
+import fr.pederobien.commandtree.interfaces.ICommandRootNode;
 import fr.pederobien.commandtree.interfaces.IHelperNode;
 import fr.pederobien.commandtree.interfaces.INode;
 
-public class CommandRootNode<T> extends RootNode<T> implements ICommandNode<T> {
+public class CommandRootNode<T> extends RootNode<T> implements ICommandRootNode<T> {
 
 	/**
 	 * Creates a root node based on the given parameters with an empty list of aliases.
@@ -62,6 +63,11 @@ public class CommandRootNode<T> extends RootNode<T> implements ICommandNode<T> {
 	 */
 	public CommandRootNode(String label, T explanation) {
 		this(label, explanation, () -> false);
+	}
+
+	@Override
+	public INode<T> export() {
+		return export(() -> new CommandNode<T>(getLabel(), getExplanation(), () -> isAvailable()));
 	}
 
 	@Override

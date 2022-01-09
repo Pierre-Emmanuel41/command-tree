@@ -4,8 +4,9 @@ import java.util.function.Supplier;
 
 import fr.pederobien.commandtree.interfaces.IHelperNode;
 import fr.pederobien.commandtree.interfaces.INode;
+import fr.pederobien.commandtree.interfaces.IRootNode;
 
-public class RootNode<T> extends Node<T> {
+public abstract class RootNode<T> extends Node<T> implements IRootNode<T> {
 	private IHelperNode<T> helperNode;
 
 	/**
@@ -64,5 +65,19 @@ public class RootNode<T> extends Node<T> {
 	 */
 	protected void setHelperNode(IHelperNode<T> helperNode) {
 		this.helperNode = helperNode;
+	}
+
+	/**
+	 * Adds each children of this root to the node returned by the given supplier.
+	 * 
+	 * @param supplier The supplier used to get the new root of the children.
+	 * 
+	 * @return The created node.
+	 */
+	protected INode<T> export(Supplier<INode<T>> supplier) {
+		INode<T> root = supplier.get();
+		for (INode<T> child : getChildren().values())
+			root.add(child);
+		return root;
 	}
 }
