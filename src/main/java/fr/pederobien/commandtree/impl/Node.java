@@ -171,7 +171,7 @@ public class Node<T> implements INode<T> {
 	 * @return A list of string from the given stream that contains the filter.
 	 */
 	protected List<String> filter(Stream<String> stream, String filter) {
-		return stream.filter(str -> str.contains(filter)).collect(Collectors.toList());
+		return stream.filter(str -> containsIgnoreCase(str, filter)).collect(Collectors.toList());
 	}
 
 	/**
@@ -585,6 +585,20 @@ public class Node<T> implements INode<T> {
 	 */
 	protected String concat(List<String> strings) {
 		return concat(strings, ", ");
+	}
+
+	/**
+	 * Check if the content string contains the filter string ignoring the case.
+	 * 
+	 * @param content The content to check.
+	 * @param filter  The filter to match.
+	 * @return True if the content contains the filter, false otherwise.
+	 */
+	protected boolean containsIgnoreCase(String content, String filter) {
+		String contentCopy = new String(content);
+		String filterCopy = new String(filter);
+
+		return contentCopy.toUpperCase().toLowerCase().contains(filterCopy.toUpperCase().toLowerCase());
 	}
 
 	/**
