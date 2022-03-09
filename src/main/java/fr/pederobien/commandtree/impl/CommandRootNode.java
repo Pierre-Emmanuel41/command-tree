@@ -111,7 +111,7 @@ public class CommandRootNode<T> extends RootNode<T> implements ICommandRootNode<
 		}
 
 		if (label.equals(getHelper().getLabel()))
-			return getHelper().onCommand(args);
+			return getHelper().onCommand(extract(args, 1));
 
 		ICommandNode<T> node = getChildren().get(label);
 
