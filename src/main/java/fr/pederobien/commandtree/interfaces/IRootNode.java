@@ -9,4 +9,11 @@ public interface IRootNode<T> extends INode<T> {
 	 * @return A simple node that contains all children of this root.
 	 */
 	INode<T> export();
+
+	/**
+	 * Add each children of this node to the children of the given node.
+	 * 
+	 * @param root The new root.
+	 */
+	void export(INode<T> root);
 }

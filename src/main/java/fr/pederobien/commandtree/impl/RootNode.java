@@ -67,17 +67,15 @@ public abstract class RootNode<T> extends Node<T> implements IRootNode<T> {
 		this.helperNode = helperNode;
 	}
 
-	/**
-	 * Adds each children of this root to the node returned by the given supplier.
-	 * 
-	 * @param supplier The supplier used to get the new root of the children.
-	 * 
-	 * @return The created node.
-	 */
-	protected INode<T> export(Supplier<INode<T>> supplier) {
-		INode<T> root = supplier.get();
+	@Override
+	public void export(INode<T> root) {
 		for (INode<T> child : getChildren().values())
 			root.add(child);
+	}
+
+	protected INode<T> export(Supplier<INode<T>> supplier) {
+		INode<T> root = supplier.get();
+		export(root);
 		return root;
 	}
 }
