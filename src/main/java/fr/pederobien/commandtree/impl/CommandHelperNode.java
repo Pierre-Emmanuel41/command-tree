@@ -3,7 +3,6 @@ package fr.pederobien.commandtree.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -47,11 +46,11 @@ public class CommandHelperNode<T> extends HelperNode<T> implements ICommandHelpe
 			for (int i = 1; i < args.length; i++)
 				if (child != null)
 					child = child.getChildren().get(args[i]);
+
 			display(child);
+			child.getChildren().values().stream().filter(node -> node.isAvailable()).forEach(node -> display(node));
 		} catch (IndexOutOfBoundsException e) {
-			for (Map.Entry<String, ? extends INode<T>> entry : getSource()) {
-				display(entry.getValue());
-			}
+			getSource().getChildren().values().stream().filter(node -> node.isAvailable()).forEach(node -> display(node));
 		} catch (Exception e) {
 			return false;
 		}
