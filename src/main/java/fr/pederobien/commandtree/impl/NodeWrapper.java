@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 import fr.pederobien.commandtree.interfaces.INode;
 
-public class NodeWrapper<T> implements INode<T> {
+public class NodeWrapper<T> extends Node<T> implements INode<T> {
 	private INode<T> source;
 
 	/**
@@ -17,22 +17,13 @@ public class NodeWrapper<T> implements INode<T> {
 	 * @param source The node source of this wrapper.
 	 */
 	protected NodeWrapper(INode<T> source) {
+		super(source.getLabel(), source.getExplanation());
 		this.source = source;
 	}
 
 	@Override
 	public Iterator<Entry<String, INode<T>>> iterator() {
 		return source.iterator();
-	}
-
-	@Override
-	public String getLabel() {
-		return source.getLabel();
-	}
-
-	@Override
-	public T getExplanation() {
-		return source.getExplanation();
 	}
 
 	@Override
