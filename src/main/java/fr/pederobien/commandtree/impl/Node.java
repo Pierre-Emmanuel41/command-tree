@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.RandomAccess;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -535,56 +536,119 @@ public class Node<T> implements INode<T> {
 	}
 
 	/**
-	 * Concatenate each argument present into the given array like : elt1 + ", " + elt2 + ", " + elt3 +...
+	 * Concatenate each element present in the <code>elements</code> array using ", " as delimiter.
 	 * 
-	 * @param args The array that contains arguments.
+	 * @param elements The array that contains elements to concatenate.
 	 * 
-	 * @return The concatenation of each argument.
+	 * @return The concatenation of each element.
 	 * 
-	 * @see #concat(String[], CharSequence)
+	 * @see #concat(Object[], CharSequence, Function)
 	 */
-	protected String concat(String[] args) {
-		return concat(args, ", ");
+	protected String concat(String[] elements) {
+		return concat(elements, ", ", elt -> elt);
 	}
 
 	/**
-	 * Concatenate each string in the <code>strings</code> array.
+	 * Concatenate each element present in the <code>elements</code> array using the specified delimiter.
 	 * 
-	 * @param strings   An array that contains string to concatenate.
-	 * @param delimiter the sequence of characters to be used between each element added to the concatenation value.
-	 * @return The concatenation of each string.
+	 * @param elements  The array that contains elements to concatenate.
+	 * @param delimiter The delimiter to use to separate elements.
 	 * 
-	 * @see StringJoiner
+	 * @return The concatenation of each element.
+	 * 
+	 * @see #concat(Object[], CharSequence, Function)
 	 */
-	protected String concat(String[] strings, CharSequence delimiter) {
+	protected String concat(String[] elements, CharSequence delimiter) {
+		return concat(elements, delimiter, elt -> elt);
+	}
+
+	/**
+	 * Concatenate each element present in the <code>elements</code> array using ", " as delimiter.
+	 * 
+	 * @param elements The array that contains elements to concatenate.
+	 * @param toString The function to apply on each element in order to get a String representation.
+	 * 
+	 * @return The concatenation of each element.
+	 * 
+	 * @see #concat(Object[], CharSequence, Function)
+	 */
+	protected <U> String concat(U[] elements, Function<U, String> toString) {
+		return concat(elements, ", ", toString);
+	}
+
+	/**
+	 * Concatenate each element present in the <code>elements</code> array using the specified delimiter as delimiter.
+	 * 
+	 * @param elements  The array that contains elements to concatenate.
+	 * @param delimiter The delimiter to use to separate elements.
+	 * @param toString  The function to apply on each element in order to get a String representation.
+	 * 
+	 * @return The concatenation of each element.
+	 */
+	protected <U> String concat(U[] elements, CharSequence delimiter, Function<U, String> toString) {
 		StringJoiner joiner = new StringJoiner(delimiter);
-		for (String string : strings)
-			joiner.add(string);
+		for (U arg : elements)
+			joiner.add(toString.apply(arg));
 		return joiner.toString();
 	}
 
 	/**
-	 * Concatenate each string in the list <code>strings</code> using the given delimiter.
+	 * Concatenate each element present in the <code>elements</code> array using ", " as delimiter.
 	 * 
-	 * @param strings   The list that contains string to concatenate
-	 * @param delimiter the sequence of characters to be used between each element added to the concatenation value.
-	 * @return The concatenation of each string.
+	 * @param elements The list that contains elements to concatenate.
+	 * 
+	 * @return The concatenation of each element.
+	 * 
+	 * @see #concat(List, CharSequence, Function)
 	 */
-	protected String concat(List<String> strings, CharSequence delimiter) {
-		return concat(strings.toArray(new String[] {}), delimiter);
+	protected String concat(List<String> elements) {
+		return concat(elements, ", ", elt -> elt);
 	}
 
 	/**
-	 * Concatenate each string in the list <code>strings</code> using the delimiter ", ".
+	 * Concatenate each element present in the <code>elements</code> array using the specified delimiter.
 	 * 
-	 * @param strings   The list that contains string to concatenate
-	 * @param delimiter the sequence of characters to be used between each element added to the concatenation value.
-	 * @return The concatenation of each string.
+	 * @param elements  The list that contains elements to concatenate.
+	 * @param delimiter The delimiter to use to separate elements.
 	 * 
-	 * @see #concat(List, CharSequence)
+	 * @return The concatenation of each element.
+	 * 
+	 * @see #concat(List, CharSequence, Function)
 	 */
-	protected String concat(List<String> strings) {
-		return concat(strings, ", ");
+	protected String concat(List<String> elements, CharSequence delimiter) {
+		return concat(elements, delimiter, elt -> elt);
+	}
+
+	/**
+	 * Concatenate each element present in the <code>elements</code> array using ", " as delimiter.
+	 * 
+	 * @param elements The list that contains elements to concatenate.
+	 * @param toString The function to apply on each element in order to get a String representation.
+	 * 
+	 * @return The concatenation of each element.
+	 * 
+	 * @see #concat(List, CharSequence, Function)
+	 */
+	protected <U> String concat(List<U> elements, Function<U, String> toString) {
+		return concat(elements, ", ", toString);
+	}
+
+	/**
+	 * Concatenate each element present in the <code>elements</code> array using the specified delimiter.
+	 * 
+	 * @param elements  The list that contains elements to concatenate.
+	 * @param delimiter The delimiter to use to separate elements.
+	 * @param toString  The function to apply on each element in order to get a String representation.
+	 * 
+	 * @return The concatenation of each element.
+	 * 
+	 * @see #concat(List, CharSequence, Function)
+	 */
+	protected <U> String concat(List<U> elements, CharSequence delimiter, Function<U, String> toString) {
+		StringJoiner joiner = new StringJoiner(delimiter);
+		for (U arg : elements)
+			joiner.add(toString.apply(arg));
+		return joiner.toString();
 	}
 
 	/**
