@@ -40,7 +40,7 @@ public class ModelCommandTree {
 		modifyAgeBuilder.withExecution((tree, args) -> modifyAgeExecution(tree, args));
 		modify.add(modifyAgeBuilder.build());
 
-		// Modify age node ---------------------------------------------------------
+		// Modify city node ---------------------------------------------------------
 		INodeBuilder<Model> modifyCityBuilder = tree.getNodeBuilder("city", "To modify the city of a Model");
 		modifyCityBuilder.withAvailability(model -> model != null);
 		modifyCityBuilder.withCompletions((tree, args) -> modifyCityCompletions(tree, args));

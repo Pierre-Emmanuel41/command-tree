@@ -11,6 +11,8 @@ public class ModelCommandTreeTestApp {
 	public static void main(String[] args) {
 		Logger.instance().colorized(true).debug(true);
 
+		System.out.println();
+
 		ModelCommandTree tree = new ModelCommandTree();
 
 		print(tree.getCompletions(""));
