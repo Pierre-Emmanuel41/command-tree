@@ -27,7 +27,7 @@ public class NodeBuilder<T> implements INodeBuilder<T> {
 		this.name = name;
 		this.explanation = explanation;
 
-		availability = seed -> true;
+		availability = _ -> true;
 	}
 
 	@Override

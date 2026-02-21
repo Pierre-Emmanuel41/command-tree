@@ -20,7 +20,7 @@ public class Tree<T> implements ITree<T> {
 	public Tree(T seed) {
 		this.seed = seed;
 
-		root = new Node<T>("", "", s -> true);
+		root = new Node<T>("", "", _ -> true);
 		helper = new Helper<T>(root);
 	}
 
