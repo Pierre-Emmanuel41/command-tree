@@ -1,89 +1,67 @@
 package fr.pederobien.commandtree.interfaces;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
+import java.util.Optional;
 
-import fr.pederobien.commandtree.events.NodeAddPostEvent;
-import fr.pederobien.commandtree.events.NodeRemovePostEvent;
-import fr.pederobien.commandtree.exceptions.NodeRegisterException;
-
-public interface INode<T> extends Iterable<Map.Entry<String, INode<T>>> {
+public interface INode<T> {
 
 	/**
-	 * @return The label of this node. It is a minecraft command argument.
+	 * @return The name of this node. The name is used to navigate from one node to another one.
 	 */
-	String getLabel();
+	String getName();
 
 	/**
-	 * @param T A generic parameter used to get different type of explanation. In most case, the explanation is a String. But it could
-	 *          append that developers need more than a simple String.
-	 * @return An explanation used to explain what this argument does for the main command.
+	 * @return An explanation used to explain what this node does for the main command.
 	 */
-	T getExplanation();
+	String getExplanation();
 
 	/**
-	 * Set the parent of this node. The given parent can contains several informations needed by this children.
-	 * 
-	 * @param parent The parent of this child.
-	 */
-	void setParent(INode<T> parent);
-
-	/**
-	 * @return the parent of this node. If this node has no parent then it returns itself.
-	 */
-	INode<T> getParent();
-
-	/**
-	 * @return The root that has not parent.
-	 */
-	INode<T> getRoot();
-
-	/**
-	 * Appends a node to this node. This element is stored into a Map with key is {@link INode#getLabel()} and the value is itself. Be
-	 * careful, if two nodes have the same label then the first node is removed in order to add the second one. This method should
-	 * throw a {@link NodeAddPostEvent}.
+	 * Adds a node in the list of children of this node.
 	 * 
 	 * @param node The node to add.
-	 * 
-	 * @throws NodeRegisterException If a node is already registered for the label of the given node.
+	 * @return True if the node has been added, false otherwise.
 	 */
-	void add(INode<T> node);
+	boolean add(INode<T> node);
 
 	/**
-	 * Remove a node from this node. This method should throw a {@link NodeRemovePostEvent}.
+	 * Remove a node from this node.
 	 * 
-	 * @param label The label of the node to remove.
+	 * @param name The name of the node to remove.
+	 * @return True if there is no node registered for the given name or if it has been removed successfully, false if the node could
+	 *         not be removed.
 	 */
-	void remove(String label);
+	Optional<INode<T>> remove(String name);
 
 	/**
-	 * @return An unmodifiable view as map of all children of this node.
+	 * @return A copy of the list that contains node's children.
 	 */
-	Map<String, ? extends INode<T>> getChildren();
+	List<INode<T>> getChildren();
 
 	/**
-	 * Get a list of all descendants matching on the given label. If label correspond to "*" then it returns a list that contains all
-	 * descendants for this node.
+	 * A node is available means that is can be used as argument.
 	 * 
-	 * @param label The label to match on.
-	 * 
-	 * @return A list of all descendants.
-	 */
-	List<? extends INode<T>> getChildrenByLabel(String label);
-
-	/**
-	 * A node is available means that is can be used as minecraft argument.
-	 * 
+	 * @param seed The seed used to determine if this node is available or not.
 	 * @return True if this edition is available, false otherwise.
 	 */
-	boolean isAvailable();
+	boolean isAvailable(T seed);
 
 	/**
-	 * Set the availability of this edition. A node is available means that is can be used as argument. It may be possible the node
-	 * availability could change according to the properties of an external object.
+	 * Requests a list of possible completions for a command argument.
 	 * 
-	 * @param isAvailable The new value that represents the availability of this edition.
+	 * @param tree The tree to which a command is dispatched.
+	 * @param args The arguments passed to the command, including final partial argument to be completed and command alias.
+	 * 
+	 * @return A List of possible completions for the final argument, or empty.
 	 */
-	void setAvailable(Supplier<Boolean> isAvailable);
+	List<String> getCompletions(ITree<T> tree, String[] args);
+
+	/**
+	 * Executes a command and returns its success.
+	 * 
+	 * @param tree The tree to which a command is dispatched.
+	 * @param args Passed command arguments.
+	 * 
+	 * @return The command result.
+	 */
+	IResult execute(ITree<T> tree, String[] args);
 }
