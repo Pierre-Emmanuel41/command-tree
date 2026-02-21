@@ -10,7 +10,7 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<author>Pierre-Emmanuel41</author>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>22</maven.compiler.target>
 		<maven.compiler.source>22</maven.compiler.source>
 	</properties>
