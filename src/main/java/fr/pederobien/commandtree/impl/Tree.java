@@ -1,6 +1,7 @@
 package fr.pederobien.commandtree.impl;
 
 import java.util.List;
+import java.util.function.Function;
 
 import fr.pederobien.commandtree.interfaces.INode;
 import fr.pederobien.commandtree.interfaces.INodeBuilder;
@@ -8,9 +9,35 @@ import fr.pederobien.commandtree.interfaces.IResult;
 import fr.pederobien.commandtree.interfaces.ITree;
 
 public class Tree<T> implements ITree<T> {
+	private final INode<T> root;
+	private final Helper<T> helper;
 	private T seed;
-	private INode<T> root;
-	private Helper<T> helper;
+
+	/**
+	 * Creates a tree associated to a specific seed. The seed is available to each node in the tree.
+	 * 
+	 * @param seed         The seed to interact with.
+	 * @param name         The name of the root node.
+	 * @param explanation  The explanation of the root node.
+	 * @param availability A function that indicates if this node is available or not, depending on the seed properties.
+	 */
+	public Tree(T seed, String name, String explanation, Function<T, Boolean> availability) {
+		this.seed = seed;
+
+		root = new Node<T>(name, explanation, availability);
+		helper = new Helper<T>(root);
+	}
+
+	/**
+	 * Creates a tree associated to a specific seed. The seed is available to each node in the tree.
+	 * 
+	 * @param seed        The seed to interact with.
+	 * @param name        The name of the root node.
+	 * @param explanation The explanation of the root node.
+	 */
+	public Tree(T seed, String name, String explanation) {
+		this(seed, name, explanation, _ -> true);
+	}
 
 	/**
 	 * Creates a command tree with a seed.
@@ -18,10 +45,7 @@ public class Tree<T> implements ITree<T> {
 	 * @param seed The seed than can be modified by tree's nodes.
 	 */
 	public Tree(T seed) {
-		this.seed = seed;
-
-		root = new Node<T>("", "", _ -> true);
-		helper = new Helper<T>(root);
+		this(seed, "", "", _ -> true);
 	}
 
 	/**

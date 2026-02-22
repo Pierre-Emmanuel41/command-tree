@@ -57,7 +57,11 @@ public class Helper<T> {
 			node = next;
 		}
 
-		IResult result = node == source ? NodeHelper.result(true, "") : NodeHelper.result(true, "%s - %s", node.getName(), node.getExplanation());
+		IResult result;
+		if (node.getName().isEmpty())
+			result = NodeHelper.result(true, "");
+		else
+			result = NodeHelper.result(true, "%s - %s", node.getName(), node.getExplanation());
 
 		for (INode<T> child : node.getChildren())
 			result.getFeedbacks().add(String.format("%s - %s", child.getName(), child.getExplanation()));

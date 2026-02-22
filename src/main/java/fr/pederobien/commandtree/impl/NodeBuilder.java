@@ -24,6 +24,9 @@ public class NodeBuilder<T> implements INodeBuilder<T> {
 	 * @param explanation The node's explanation.
 	 */
 	public NodeBuilder(String name, String explanation) {
+		check(name);
+		check(explanation);
+
 		this.name = name;
 		this.explanation = explanation;
 
@@ -55,6 +58,11 @@ public class NodeBuilder<T> implements INodeBuilder<T> {
 		node.setExecution(execution);
 
 		return node;
+	}
+
+	private void check(String value) {
+		if (value.trim().isEmpty())
+			throw new IllegalArgumentException("Incorrect parameter format, it shall not contains invisible characters");
 	}
 
 	private class WrappedNode<U> extends Node<U> {

@@ -3,60 +3,73 @@ package fr.pederobien.commandtree.testing;
 import java.util.List;
 import java.util.StringJoiner;
 
+import fr.pederobien.commandtree.impl.CLI;
 import fr.pederobien.commandtree.interfaces.IResult;
 import fr.pederobien.utils.event.Logger;
 
 public class ModelCommandTreeTestApp {
 
 	public static void main(String[] args) {
-		Logger.instance().colorized(true).debug(true);
+		Logger.instance().colorized(true).debug(true).timeStamp(false);
 
 		System.out.println();
 
-		ModelCommandTree tree = new ModelCommandTree();
+		testTree();
+		testCLI();
+	}
 
-		print(tree.getCompletions(""));
-		print(tree.execute(""));
+	private static void testTree() {
+		ModelCommandTree modelTree = new ModelCommandTree();
 
-		print(tree.getCompletions("h"));
-		print(tree.getCompletions("in"));
+		print(modelTree.getTree().getCompletions(""));
+		print(modelTree.getTree().execute(""));
 
-		print(tree.getCompletions("help"));
-		print(tree.execute("help"));
+		print(modelTree.getTree().getCompletions("h"));
+		print(modelTree.getTree().getCompletions("in"));
 
-		print(tree.getCompletions("help mo"));
-		print(tree.getCompletions("help modify"));
-		print(tree.execute("help modify"));
+		print(modelTree.getTree().getCompletions("help"));
+		print(modelTree.getTree().execute("help"));
 
-		print(tree.getCompletions("help modify z"));
-		print(tree.execute("help modify z"));
+		print(modelTree.getTree().getCompletions("help mo"));
+		print(modelTree.getTree().getCompletions("help modify"));
+		print(modelTree.getTree().execute("help modify"));
 
-		print(tree.getCompletions("init"));
-		print(tree.getCompletions("init Harr"));
-		print(tree.getCompletions("init Harry "));
-		print(tree.getCompletions("init Harry 2"));
-		print(tree.getCompletions("init Harry 20 "));
-		print(tree.getCompletions("init Harry 20 Hog"));
-		print(tree.execute("init Harry 20 Hogwarts"));
+		print(modelTree.getTree().getCompletions("help modify z"));
+		print(modelTree.getTree().execute("help modify z"));
 
-		print(tree.execute("init Harry twenty Hogwarts"));
+		print(modelTree.getTree().getCompletions("init"));
+		print(modelTree.getTree().getCompletions("init Harr"));
+		print(modelTree.getTree().getCompletions("init Harry "));
+		print(modelTree.getTree().getCompletions("init Harry 2"));
+		print(modelTree.getTree().getCompletions("init Harry 20 "));
+		print(modelTree.getTree().getCompletions("init Harry 20 Hog"));
+		print(modelTree.getTree().execute("init Harry 20 Hogwarts"));
 
-		print(tree.getCompletions("modify na"));
-		print(tree.getCompletions("modify name "));
-		print(tree.execute("modify name "));
-		print(tree.execute("modify name Ronald"));
+		print(modelTree.getTree().execute("init Harry twenty Hogwarts"));
 
-		print(tree.getCompletions("modify a"));
-		print(tree.getCompletions("modify ag "));
-		print(tree.getCompletions("modify age "));
-		print(tree.execute("modify age "));
-		print(tree.execute("modify age thirty"));
-		print(tree.execute("modify age 30"));
+		print(modelTree.getTree().getCompletions("modify na"));
+		print(modelTree.getTree().getCompletions("modify name "));
+		print(modelTree.getTree().execute("modify name "));
+		print(modelTree.getTree().execute("modify name Ronald"));
 
-		print(tree.getCompletions("modify c"));
-		print(tree.getCompletions("modify city "));
-		print(tree.execute("modify city "));
-		print(tree.execute("modify city Forbidden_forest"));
+		print(modelTree.getTree().getCompletions("modify a"));
+		print(modelTree.getTree().getCompletions("modify ag "));
+		print(modelTree.getTree().getCompletions("modify age "));
+		print(modelTree.getTree().execute("modify age "));
+		print(modelTree.getTree().execute("modify age thirty"));
+		print(modelTree.getTree().execute("modify age 30"));
+
+		print(modelTree.getTree().getCompletions("modify c"));
+		print(modelTree.getTree().getCompletions("modify city "));
+		print(modelTree.getTree().execute("modify city "));
+		print(modelTree.getTree().execute("modify city Forbidden_forest"));
+	}
+
+	private static void testCLI() {
+		ModelCommandTree modelTree = new ModelCommandTree();
+
+		Runnable cli = CLI.simpleInterface("test>", arg -> arg.equals("q"), modelTree.getTree());
+		cli.run();
 	}
 
 	private static void print(List<String> completions) {

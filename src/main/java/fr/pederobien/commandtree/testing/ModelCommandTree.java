@@ -51,26 +51,10 @@ public class ModelCommandTree {
 	}
 
 	/**
-	 * Extract a list of arguments from the given arguments parameter. Each argument shall be separated by a space character. Then
-	 * dispatch the list of arguments to each node and get the possible completions.
-	 * 
-	 * @param arguments The arguments line to use to get the associated completion.
-	 * 
-	 * @return A List of possible completions for the final argument, or empty.
+	 * @return The underlying tree to interact with a Model.
 	 */
-	public List<String> getCompletions(String argument) {
-		return tree.getCompletions(argument);
-	}
-
-	/**
-	 * Extract a list of arguments from the given arguments parameter. Each argument shall be separated by a space character. Then
-	 * dispatch the list of arguments to each node and get the command result.
-	 * 
-	 * @param argument Passed command arguments, all separated by a space character.
-	 * @return The command result composed of a success state and a feedback.
-	 */
-	public IResult execute(String argument) {
-		return tree.execute(argument);
+	public ITree<Model> getTree() {
+		return tree;
 	}
 
 	private List<String> initCompletion(ITree<Model> tree, String[] args) {

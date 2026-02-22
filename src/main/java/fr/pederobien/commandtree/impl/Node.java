@@ -20,7 +20,7 @@ public class Node<T> implements INode<T> {
 	 * 
 	 * @param name        The node name.
 	 * @param explanation The explanation associated to this node.
-	 * @param isAvailable A supplier that indicates if this node is available or not, depending on the seed properties.
+	 * @param isAvailable A function that indicates if this node is available or not, depending on the seed properties.
 	 */
 	public Node(String name, String explanation, Function<T, Boolean> isAvailable) {
 		this.name = name;
