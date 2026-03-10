@@ -1,5 +1,6 @@
 package fr.pederobien.commandtree.impl;
 
+import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.function.Function;
 
@@ -55,7 +56,13 @@ public class CLI {
 				if (exit.apply(arguments))
 					break;
 
-				print(tree.execute(arguments));
+				try {
+					print(tree.execute(arguments));
+				} catch (Exception e) {
+					String format = "An exception occured while dispatching command \"%s\"\nMessage:%s";
+					String text = String.format(format, arguments, e.getMessage());
+					print(text, true);
+				}
 			}
 
 			System.out.println("Exiting program...");
@@ -63,12 +70,19 @@ public class CLI {
 		}
 
 		private void print(IResult result) {
-			if (result.isSuccess())
-				for (String feedback : result.getFeedbacks())
-					System.out.println(feedback);
-			else
-				for (String feedback : result.getFeedbacks())
-					System.err.println(feedback);
+			for (String feedback : result.getFeedbacks())
+				print(feedback, !result.isSuccess());
+		}
+
+		/**
+		 * Print the given text in the console.
+		 * 
+		 * @param text    The text to print
+		 * @param isError True if the text correspond to an error, false otherwise.
+		 */
+		private void print(String text, boolean isError) {
+			PrintStream stream = isError ? System.err : System.out;
+			stream.println(text);
 		}
 	}
 }
