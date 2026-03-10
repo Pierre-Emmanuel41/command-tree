@@ -3,6 +3,7 @@ package fr.pederobien.commandtree.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.function.Function;
 
 import fr.pederobien.commandtree.interfaces.INode;
@@ -94,8 +95,13 @@ public class Node<T> implements INode<T> {
 	public IResult execute(ITree<T> tree, String[] args) {
 		T seed = tree.getSeed();
 
-		if (args.length == 0)
-			return NodeHelper.result(false, "Input arguments array is empty");
+		if (args.length == 0) {
+			StringJoiner joiner = new StringJoiner(", ");
+			for (INode<T> child : getChildren())
+				joiner.add(child.getName());
+
+			return NodeHelper.result(false, "Input arguments array is empty, possible argument(s): %s", joiner);
+		}
 
 		INode<T> node = getNodeByName(args[0]);
 		if (node == null)
