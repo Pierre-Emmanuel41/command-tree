@@ -1,6 +1,7 @@
 package fr.pederobien.commandtree.impl;
 
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 
@@ -47,17 +48,21 @@ public class CLI {
 		 */
 		public void run() {
 			Scanner scanner = new Scanner(System.in);
+			String arguments = null;
 
 			while (true) {
-				System.out.print(prompt);
-				String arguments = scanner.nextLine();
-
-				// Checking is user exit console
-				if (exit.apply(arguments))
-					break;
-
 				try {
+					System.out.print(prompt);
+					arguments = scanner.nextLine();
+
+					// Checking is user exit console
+					if (exit.apply(arguments))
+						break;
+
 					print(tree.execute(arguments));
+				} catch (NoSuchElementException e) {
+					// Program exit abnormally
+					break;
 				} catch (Exception e) {
 					String format = "An exception occured while dispatching command \"%s\"\nMessage:%s";
 					String text = String.format(format, arguments, e.getMessage());
