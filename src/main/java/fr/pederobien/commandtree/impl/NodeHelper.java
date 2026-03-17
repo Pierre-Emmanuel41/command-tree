@@ -357,6 +357,31 @@ public class NodeHelper {
 	}
 
 	/**
+	 * Parse the string argument as boolean. The input bool shall be "true" or "false" or "", case ignored.
+	 * 
+	 * @param bool the value to parse.
+	 * @return True if the input value is "true" or "false" or "", case ignored.
+	 */
+	public static boolean isNotStrictBool(String bool) {
+		return bool.equals("") || isStrictBool(bool);
+	}
+
+	/**
+	 * Parse the string argument as boolean. The input bool shall be "true" or "false", case ignored.
+	 * 
+	 * @param bool the value to parse.
+	 * @return True if the input value is "true" or "false", case ignored.
+	 */
+	public static boolean isStrictBool(String bool) {
+		try {
+			parseBool(bool);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	/**
 	 * Parses the string argument as a signed decimal integer. The characters in the string must all be decimal digits, except that
 	 * the first character may be an ASCII minus sign {@code '-'} ({@code '\u005Cu002D'}) to indicate a negative value or an ASCII
 	 * plus sign {@code '+'} ({@code '\u005Cu002B'}) to indicate a positive value. The resulting integer value is returned, exactly as

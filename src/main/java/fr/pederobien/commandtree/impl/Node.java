@@ -98,7 +98,8 @@ public class Node<T> implements INode<T> {
 		if (args.length == 0) {
 			StringJoiner joiner = new StringJoiner(", ");
 			for (INode<T> child : getChildren())
-				joiner.add(child.getName());
+				if (child.isAvailable(seed))
+					joiner.add(child.getName());
 
 			return NodeHelper.result(false, "Input arguments array is empty, possible argument(s): %s", joiner);
 		}
