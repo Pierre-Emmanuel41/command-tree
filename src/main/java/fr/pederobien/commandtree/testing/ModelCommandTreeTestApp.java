@@ -10,9 +10,8 @@ import fr.pederobien.utils.event.Logger;
 public class ModelCommandTreeTestApp {
 
 	public static void main(String[] args) {
-		Logger.instance().colorized(true).debug(true).timeStamp(false);
-
-		System.out.println();
+		Logger.setPrintInColor(true);
+		Logger.setPrintTimeStamp(false);
 
 		testTree();
 		testCLI();
