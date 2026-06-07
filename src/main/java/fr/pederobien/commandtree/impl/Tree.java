@@ -36,7 +36,7 @@ public class Tree<T> implements ITree<T> {
 	 * @param explanation The explanation of the root node.
 	 */
 	public Tree(T seed, String name, String explanation) {
-		this(seed, name, explanation, _ -> true);
+		this(seed, name, explanation, treeSeed -> true);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Tree<T> implements ITree<T> {
 	 * @param seed The seed than can be modified by tree's nodes.
 	 */
 	public Tree(T seed) {
-		this(seed, "", "", _ -> true);
+		this(seed, "", "", treeSeed -> true);
 	}
 
 	/**

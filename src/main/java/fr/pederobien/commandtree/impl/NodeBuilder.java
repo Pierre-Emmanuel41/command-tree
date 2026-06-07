@@ -30,7 +30,7 @@ public class NodeBuilder<T> implements INodeBuilder<T> {
 		this.name = name;
 		this.explanation = explanation;
 
-		availability = _ -> true;
+		availability = seed -> true;
 	}
 
 	@Override
