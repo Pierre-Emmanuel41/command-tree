@@ -39,10 +39,17 @@ public interface ITree<T> {
 	 * dispatch the list of arguments to each node and get the possible completions.
 	 * 
 	 * @param arguments The arguments line to use to get the associated completion.
-	 * 
 	 * @return A List of possible completions for the final argument, or empty.
 	 */
 	List<String> getCompletions(String arguments);
+
+	/**
+	 * Dispatch the list of arguments to each node and get the possible completions.
+	 * 
+	 * @param arguments The arguments line to use to get the associated completion.
+	 * @return A List of possible completions for the final argument, or empty.
+	 */
+	List<String> getCompletions(String[] arguments);
 
 	/**
 	 * Extract a list of arguments from the given arguments parameter. Each argument shall be separated by a space character. Then
@@ -52,4 +59,12 @@ public interface ITree<T> {
 	 * @return The command result composed of a success state and a feedback.
 	 */
 	IResult execute(String arguments);
+
+	/**
+	 * Dispatch the list of arguments to each node and get the command result.
+	 * 
+	 * @param argument Passed command arguments, all separated by a space character.
+	 * @return The command result composed of a success state and a feedback.
+	 */
+	IResult execute(String[] arguments);
 }

@@ -90,15 +90,20 @@ public class Tree<T> implements ITree<T> {
 			args = intermediate;
 		}
 
-		if (args.length > 0 && args[0].equals(helper.getName()))
-			return helper.getCompletions(NodeHelper.extract(args, 1));
+		return getCompletions(args);
+	}
+
+	@Override
+	public List<String> getCompletions(String[] arguments) {
+		if (arguments.length > 0 && arguments[0].equals(helper.getName()))
+			return helper.getCompletions(NodeHelper.extract(arguments, 1));
 
 		List<String> completions = NodeHelper.emptyList();
-		if (args[0].length() == 0 || NodeHelper.containsIgnoreCase(helper.getName(), args[0]))
+		if (arguments[0].length() == 0 || NodeHelper.containsIgnoreCase(helper.getName(), arguments[0]))
 			completions.add(helper.getName());
 
 		// The returned list might be not modifiable
-		for (String completion : root.getCompletions(this, args))
+		for (String completion : root.getCompletions(this, arguments))
 			completions.add(completion);
 
 		return completions;
@@ -111,6 +116,11 @@ public class Tree<T> implements ITree<T> {
 		if (args.length > 0 && args[0].equals(helper.getName()))
 			return helper.execute(NodeHelper.extract(args, 1));
 
-		return root.execute(this, args);
+		return execute(args);
+	}
+
+	@Override
+	public IResult execute(String[] arguments) {
+		return root.execute(this, arguments);
 	}
 }
