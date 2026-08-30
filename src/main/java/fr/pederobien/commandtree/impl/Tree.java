@@ -111,16 +111,14 @@ public class Tree<T> implements ITree<T> {
 
 	@Override
 	public IResult execute(String argument) {
-		String[] args = argument.trim().split(" ");
-
-		if (args.length > 0 && args[0].equals(helper.getName()))
-			return helper.execute(NodeHelper.extract(args, 1));
-
-		return execute(args);
+		return execute(argument.trim().split(" "));
 	}
 
 	@Override
 	public IResult execute(String[] arguments) {
+		if (arguments.length > 0 && arguments[0].equals(helper.getName()))
+			return helper.execute(NodeHelper.extract(arguments, 1));
+
 		return root.execute(this, arguments);
 	}
 }
