@@ -79,18 +79,7 @@ public class Tree<T> implements ITree<T> {
 
 	@Override
 	public List<String> getCompletions(String argument) {
-		String[] args = argument.split(" ");
-
-		// Last character is space, then it needs to be added to the args list
-		if (argument.lastIndexOf(" ") == argument.length() - 1) {
-			String[] intermediate = new String[args.length + 1];
-			System.arraycopy(args, 0, intermediate, 0, args.length);
-			intermediate[intermediate.length - 1] = "";
-
-			args = intermediate;
-		}
-
-		return getCompletions(args);
+		return getCompletions(argument.trim().split(" "));
 	}
 
 	@Override
@@ -102,9 +91,7 @@ public class Tree<T> implements ITree<T> {
 		if (arguments[0].length() == 0 || NodeHelper.containsIgnoreCase(helper.getName(), arguments[0]))
 			completions.add(helper.getName());
 
-		// The returned list might be not modifiable
-		for (String completion : root.getCompletions(this, arguments))
-			completions.add(completion);
+		completions.addAll(root.getCompletions(this, arguments));
 
 		return completions;
 	}
